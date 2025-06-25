@@ -2,9 +2,9 @@ name: Java Maven Build
 
 on:
   push:
-    branches: [ local ]  # triggers on 'atom' branch
+    branches: [ "*" ]  # triggers on 'atom' branch
   pull_request:
-    branches: [ local ]
+    branches: [ "*" ]
 
 jobs:
   build:
