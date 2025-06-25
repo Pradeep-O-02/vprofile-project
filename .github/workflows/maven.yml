@@ -2,14 +2,14 @@ name: Java Maven Build
 
 on:
   push:
-    branches: [ "*" ]  # triggers on 'atom' branch
+    branches: [ main ]   # Change this if your branch is different
   pull_request:
-    branches: [ "*" ]
+    branches: [ main ]
+  workflow_dispatch:
 
 jobs:
   build:
-
-    runs-on: windows-latest  # Because you're using `bat` commands
+    runs-on: windows-latest  # Or use ubuntu-latest if you're not using bat files
 
     steps:
     - name: Checkout Code
@@ -19,22 +19,21 @@ jobs:
       uses: actions/setup-java@v4
       with:
         java-version: '21'
-        distribution: 'temurin'  # Use Eclipse Temurin for JDK
+        distribution: 'temurin'
 
-    - name: Set up Maven
-      uses: s4u/setup-maven-action@v1
-      with:
-        maven-version: '3.9.9'
+    - name: Check Maven Version
+      run: mvn -version
+      shell: cmd
 
     - name: Run Unit Tests
       run: mvn test
       shell: cmd
 
-    - name: Build Project
+    - name: Build Project (skip tests)
       run: mvn install -DskipTests
       shell: cmd
 
-    - name: Archive WAR Artifact
+    - name: Upload WAR Artifact
       uses: actions/upload-artifact@v4
       with:
         name: war-artifact
